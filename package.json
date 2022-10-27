@@ -1,0 +1,20 @@
+{
+  "name": "merapar",
+  "version": "1.0.0",
+  "description": "technical test #157",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/polymath-earlydoors/merapar.git"
+  },
+  "author": "Jon Greenwood",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/polymath-earlydoors/merapar/issues"
+  },
+  "homepage": "https://github.com/polymath-earlydoors/merapar#readme"
+}
