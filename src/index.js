@@ -1,20 +1,21 @@
-import { readFile } from 'node:fs/promises';
-import { writeFile } from 'node:fs/promises';
+import parseData from './parseData.js' 
+import generateSummaryFile from './generateSummaryFile.js'
 
 try {
-  const filePath = new URL('../merapar.csv', import.meta.url);
-  const contents = await readFile(filePath, { encoding: 'utf8' });
-  // remove the Headers
-  const [, ...dataArray] = contents.split(/\r?\n/);
+  // Read the file
+  const dataArray = await parseData()
 
+  // separate the strings into arrays
   const splitStringArray = Array.from(dataArray, element => element.split(','))
 
+  // create objects from the array elements
   const objectArray = splitStringArray.map(element => ({
     DepartmentName: element[0].valueOf(),
     Date: element[1].valueOf(),
     Sales: Number(element[2].valueOf())
   }))
 
+  // sum the Sales by DepartmentName
   const summedSalesByDepartmentName = objectArray.map(element => {
     const filteredArray = objectArray.filter(e => e.DepartmentName === element.DepartmentName)
     const sumOfSales = filteredArray.reduce((accumulation, object) => {
@@ -24,6 +25,7 @@ try {
     return { DepartmentName: filteredArray[0].DepartmentName, Sales: sumOfSales }
   })
 
+  // Filter the array into unique DepartmentNames
   const uniqueIds = [];
   const unique = summedSalesByDepartmentName.filter(element => {
     const isDuplicate = uniqueIds.includes(element.DepartmentName);
@@ -34,30 +36,8 @@ try {
     return false;
   });
 
-
-  let data = "Department Name, Sales";
-  unique.forEach(element => {
-    data += `\n${element.DepartmentName},${element.Sales}`
-  } );
-
-(async function main() {
-    try {
-        await writeFile(
-                "merapar-summary.csv", data)
-  
-        console.log("File written successfully");
-        console.log("The written file has"
-            + " the following contents:");
-  
-         console.log("" + 
-            readFile("./merapar-summary.csv"));
-  
-    } catch (err) {
-        console.error(err);
-    }
-})()
-
-  
+  // Write the file
+  await generateSummaryFile(unique)  
 
 } catch (err) {
   console.error(err.message);
