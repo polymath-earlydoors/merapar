@@ -18,7 +18,7 @@ try {
 
   // Filter the array into unique DepartmentNames
   const uniqueIds = [];
-  const unique = summedSalesByDepartmentName.filter(element => {
+  const uniqueDepartmentArray = summedSalesByDepartmentName.filter(element => {
     const isDuplicate = uniqueIds.includes(element.DepartmentName);
     if (!isDuplicate) {
         uniqueIds.push(element.DepartmentName);
@@ -28,7 +28,7 @@ try {
   });
 
   // Write the file
-  await generateSummaryFile(unique)  
+  await generateSummaryFile(uniqueDepartmentArray)  
 
 } catch (err) {
   console.error(err.message);
