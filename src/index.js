@@ -1,19 +1,10 @@
-import parseData from './parseData.js' 
+import readAndParse from './readAndParse.js' 
 import generateSummaryFile from './generateSummaryFile.js'
 
 try {
-  // Read the file
-  const dataArray = await parseData()
-
-  // separate the strings into arrays
-  const splitStringArray = Array.from(dataArray, element => element.split(','))
-
-  // create objects from the array elements
-  const objectArray = splitStringArray.map(element => ({
-    DepartmentName: element[0].valueOf(),
-    Date: element[1].valueOf(),
-    Sales: Number(element[2].valueOf())
-  }))
+  const filename = 'merapar.csv'
+  // Read the file and returns objects
+  const objectArray = await readAndParse(filename)
 
   // sum the Sales by DepartmentName
   const summedSalesByDepartmentName = objectArray.map(element => {
