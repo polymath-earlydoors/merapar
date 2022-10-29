@@ -4,9 +4,13 @@ import { createReadStream } from 'node:fs'
 function processFile(filename){
   let dataArray = [];
   return new Promise(resolve => {
-    createReadStream(filename)
+    createReadStream(filename).on('error', err => console.log(err.message))
     .pipe(csvParser())
-    .on('error', (error) => console.log(error.message))
+    .on('error', 
+      (error) => {
+        console.log(error.message)
+        reject(new Error('uh'))
+    })
     .on('data', (row) => {
       dataArray.push(
       {
